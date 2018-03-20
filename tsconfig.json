@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+      "module": "commonjs",
+      "target": "es5",
+      "sourceMap": true,
+      "alwaysStrict": true,
+      "noImplicitReturns": true,
+      "noFallthroughCasesInSwitch": true,
+      "strictPropertyInitialization": true,
+      "noImplicitAny": false,
+      "noImplicitThis": true,
+      "strict": true,
+      "experimentalDecorators": true,
+      "lib": [
+        "dom",
+        "esnext"
+      ],
+      "types": [
+        "node"
+      ],
+      "outDir": "dist/"
+    },
+    "exclude": [
+      "./coverage",
+      "./node_modules",
+      "./dist"
+    ]
+  }
