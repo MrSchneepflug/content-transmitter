@@ -16,6 +16,8 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
+    "bluebird": "^3.5.1",
+    "crawler": "^1.1.2",
     "sinek": "~6.15.0"
   },
   "devDependencies": {

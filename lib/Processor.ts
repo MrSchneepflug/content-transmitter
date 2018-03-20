@@ -1,7 +1,7 @@
 import * as EventEmitter from "events";
 
 import ConfigInterface from "./interfaces/ConfigInterface";
-import KafkaMessageInterface from "./interfaces/KafkaMessageInterface";
+import ConsumerPayloadInterface from "./interfaces/ConsumerPayloadInterface";
 import ProducerPayloadInterface from "./interfaces/ProducerPayloadInterface";
 
 import Consumer from "./kafka/Consumer";
@@ -23,6 +23,7 @@ export default class Processor extends EventEmitter {
 
     this.consumer.on("error", this.handleError.bind(this));
     this.producer.on("error", this.handleError.bind(this));
+    this.crawler.on("error", this.handleError.bind(this));
   }
 
   public async start(): Promise<void> {
@@ -45,12 +46,8 @@ export default class Processor extends EventEmitter {
     }
   }
 
-  private async handleConsumerMessage(message: KafkaMessageInterface): Promise<void> {
-
-    const payload: ProducerPayloadInterface = {
-        content: "",
-    };
-
+  private async handleConsumerMessage(message: ConsumerPayloadInterface): Promise<void> {
+    const payload = await this.crawler.crawl(message.url);
     await this.producer.produce(message.key, payload);
   }
 
