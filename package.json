@@ -1,0 +1,28 @@
+{
+  "name": "knamp-content-transmitter",
+  "version": "0.1.0",
+  "description": "Crawl HTML from a server (triggered by Events) and produce it to Apache Kafka",
+  "main": "dist/index.js",
+  "repository": "git@github.com:knamp/content-transmitter.git",
+  "author": "Christian Fröhlingsdorf <chris@5cf.de>",
+  "license": "MIT",
+  "scripts": {
+    "start": "yarn build && yarn test",
+    "test": "node dist/test/sample.js",
+    "ts:lint": "tslint -c tslint.json '**/*.ts'",
+    "ts:build": "rm -rf dist/ && tsc -p tsconfig.json",
+    "ts:watch": "yarn ts:build --watch",
+    "build": "yarn ts:build",
+    "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "sinek": "~6.15.0"
+  },
+  "devDependencies": {
+    "@types/es6-promise": "~3.3.0",
+    "@types/node": "~9.4.7",
+    "concurrently": "~3.5.1",
+    "tslint": "~5.9.1",
+    "typescript": "~2.7.2"
+  }
+}
