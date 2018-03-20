@@ -3,14 +3,14 @@ import * as EventEmitter from "events";
 import { NConsumer as SinekConsumer } from "sinek";
 
 import ConfigInterface from "./../interfaces/ConfigInterface";
-import KafkaMessageInterface from "./../interfaces/KafkaMessageInterface";
+import ConsumerPayloadInterface from "./../interfaces/ConsumerPayloadInterface";
 
 export default class Consumer extends EventEmitter {
   private consumer: SinekConsumer;
 
   constructor(
     private config: ConfigInterface,
-    private process: (message: KafkaMessageInterface) => Promise<void>,
+    private process: (message: ConsumerPayloadInterface) => Promise<void>,
   ) {
     super();
 
@@ -32,12 +32,13 @@ export default class Consumer extends EventEmitter {
 
     // Consume as JSON with callback
     try {
-      await this.consumer.consume(
+      // Do not await this (it only fires after first message)
+      this.consumer.consume(
         this.consume.bind(this),
         true,
         true,
         this.config.consumerOptions,
-      );
+      ).catch((error) => this.handleError(error));
     } catch (error) {
       this.handleError(error);
     }
@@ -80,10 +81,12 @@ export default class Consumer extends EventEmitter {
    * Handle newly created messages
    */
   private async handleMessage(message: any) {
-    const messageContent: KafkaMessageInterface = {
+
+    const messageContent: ConsumerPayloadInterface = {
         key: message.key,
-        value: message.value,
+        url: message.value.url,
     };
+
     await this.process(messageContent);
   }
 

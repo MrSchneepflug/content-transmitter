@@ -35,6 +35,10 @@ export default interface ConfigInterface {
     ackTimeoutMs?: number,
     partitionerType?: number,
   };
+  crawler?: {
+   maxConnections?: number;
+   rateLimit?: number;
+  };
   consumerOptions?: {
     batchSize?: number;
     commitEveryNBatch?: number;
