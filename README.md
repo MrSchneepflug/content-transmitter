@@ -11,7 +11,7 @@ Install via yarn
 Then configure it and use it
 
 ```javascript
-import ContentTransmitter from "../";
+import ContentTransmitter from "knamp-content-transmitter";
 
 (async () => {
 
