@@ -28,6 +28,7 @@ export default class Crawler extends EventEmitter {
 
                     const payload: ProducerPayloadInterface = {
                         content: result.body,
+                        url,
                     };
 
                     resolve(payload);
