@@ -47,7 +47,7 @@ export default class Processor extends EventEmitter {
   }
 
   private async handleConsumerMessage(message: ConsumerPayloadInterface): Promise<void> {
-    const payload = await this.crawler.crawl(message.url);
+    const payload: ProducerPayloadInterface = await this.crawler.crawl(message.url);
     await this.producer.produce(message.key, payload);
   }
 
