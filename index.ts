@@ -1,4 +1,4 @@
-import merge from "lodash/merge";
+import { merge } from "lodash";
 import ConfigInterface from "./lib/interfaces/ConfigInterface";
 
 import Processor from "./lib/Processor";
