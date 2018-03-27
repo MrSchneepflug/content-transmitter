@@ -1,3 +1,4 @@
+import merge from "lodash/merge";
 import ConfigInterface from "./lib/interfaces/ConfigInterface";
 
 import Processor from "./lib/Processor";
@@ -27,7 +28,7 @@ const defaultOptions = {
 };
 
 export default async (options: ConfigInterface): Promise<Processor> => {
-  const config: ConfigInterface = Object.assign({}, defaultOptions, options);
+  const config: ConfigInterface = merge(defaultOptions, options);
   const processor = new Processor(config);
   await processor.start();
   return processor;
