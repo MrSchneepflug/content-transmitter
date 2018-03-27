@@ -19,7 +19,7 @@
     "bluebird": "^3.5.1",
     "crawler": "^1.1.2",
     "lodash": "^4.17.5",
-    "sinek": "~6.15.0"
+    "sinek": "~6.15.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.106",
