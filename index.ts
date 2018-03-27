@@ -4,13 +4,18 @@ import ConfigInterface from "./lib/interfaces/ConfigInterface";
 import Processor from "./lib/Processor";
 
 const defaultOptions = {
-  consumeWithBackpressure: true,
-  kafkaHost: "127.0.0.1:9092",
-  options: {
+  "batch.num.messages": 1000000,
+  "compression.codec": "snappy",
+  "consumeWithBackpressure": true,
+  "dr_cb": true,
+  "event_cb": true,
+  "kafkaHost": "127.0.0.1:9092",
+  "message.send.max.retries": 10,
+  "options": {
     ackTimeoutMs: 100,
     autoCommit: true,
     autoCommitIntervalMs: 1000,
-    fetchMaxBytes: 1024 * 512,
+    fetchMaxBytes: 1024 * 1024,
     fetchMaxWaitMs: 10,
     fetchMinBytes: 1,
     fromOffset: "earliest",
@@ -22,14 +27,17 @@ const defaultOptions = {
     sessionTimeout: 8000,
     ssl: false,
   },
-  produceFlushEveryMs: 1000,
-  producerPartitionCount: 1,
-  workerPerPartition: 1,
+  "produceFlushEveryMs": 1000,
+  "producerPartitionCount": 1,
+  "queue.buffering.max.messages": 100000,
+  "queue.buffering.max.ms": 1000,
+  "retry.backoff.ms": 200,
+  "socket.keepalive.enable": true,
+  "workerPerPartition": 1,
 };
 
-export default async (options: ConfigInterface): Promise<Processor> => {
+export default (options: ConfigInterface): Processor => {
   const config: ConfigInterface = merge(defaultOptions, options);
-  const processor = new Processor(config);
-  await processor.start();
-  return processor;
+
+  return new Processor(config);
 };

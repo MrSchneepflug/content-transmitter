@@ -23,12 +23,12 @@ export default class Producer extends EventEmitter {
    */
   public async connect(): Promise<void> {
     try {
+      this.producer.on("error", this.handleError);
+
       await this.producer.connect();
     } catch (error) {
       this.handleError(error);
     }
-
-    this.producer.on("error", this.handleError);
   }
 
   /**
