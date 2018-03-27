@@ -14,7 +14,7 @@ export default class Processor extends EventEmitter {
   private producer: Producer;
   private crawler: Crawler;
 
-  constructor(config: ConfigInterface) {
+  constructor(public config: ConfigInterface) {
     super();
 
     this.consumer = new Consumer(config, this.handleConsumerMessage.bind(this));
