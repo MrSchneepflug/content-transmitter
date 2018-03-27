@@ -18,7 +18,7 @@
   "dependencies": {
     "bluebird": "^3.5.1",
     "crawler": "^1.1.2",
-    "lodash.merge": "^4.6.1",
+    "lodash": "^4.17.5",
     "sinek": "~6.15.0"
   },
   "devDependencies": {
