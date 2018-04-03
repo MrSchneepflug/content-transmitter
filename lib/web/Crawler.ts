@@ -16,6 +16,10 @@ export default class Crawler extends EventEmitter {
         this.spider = new NodeCrawler(config.crawler);
     }
 
+    public transform(body: string): string {
+      return body.replace(/\r?\n|\r/g, " ").trim();
+    }
+
     public crawl(url: string): Promise<ProducerPayloadInterface> {
         return new Promise((resolve, reject) => {
             this.spider.queue({
@@ -27,7 +31,7 @@ export default class Crawler extends EventEmitter {
                     }
 
                     const payload: ProducerPayloadInterface = {
-                        content: result.body,
+                        content: this.transform(result.body),
                         url,
                     };
 
