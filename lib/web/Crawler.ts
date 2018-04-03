@@ -8,46 +8,46 @@ import ProducerPayloadInterface from "./../interfaces/ProducerPayloadInterface";
 
 export default class Crawler extends EventEmitter {
 
-    private spider: NodeCrawler;
+  private spider: NodeCrawler;
 
-    constructor(config: ConfigInterface) {
-        super();
+  constructor(config: ConfigInterface) {
+    super();
 
-        this.spider = new NodeCrawler(config.crawler);
-    }
+    this.spider = new NodeCrawler(config.crawler);
+  }
 
-    public transform(body: string): string {
-      return body.replace(/\r?\n|\r/g, " ").trim();
-    }
+  public transform(body: string): string {
+    return body.replace(/\r?\n|\r/g, " ").trim();
+  }
 
-    public crawl(url: string): Promise<ProducerPayloadInterface> {
-        return new Promise((resolve, reject) => {
-            this.spider.queue({
-                callback: (error, result, done) => {
-                    done();
+  public crawl(url: string): Promise<ProducerPayloadInterface> {
+    return new Promise((resolve, reject) => {
+      this.spider.queue({
+        callback: (error, result, done) => {
+          done();
 
-                    if (error) {
-                        return reject(error);
-                    }
+          if (error) {
+            return reject(error);
+          }
 
-                    const payload: ProducerPayloadInterface = {
-                        content: this.transform(result.body),
-                        url,
-                    };
+          const payload: ProducerPayloadInterface = {
+            content: this.transform(result.body),
+            url,
+          };
 
-                    resolve(payload);
-                },
-                jQuery: false,
-                uri: url,
-            });
-        });
-    }
+          resolve(payload);
+        },
+        jQuery: false,
+        uri: url,
+      });
+    });
+  }
 
-    public close(): void {
-        // empty
-    }
+  public close(): void {
+    // empty
+  }
 
-    private handleError(error: Error): void {
-        super.emit("error", error);
-    }
+  private handleError(error: Error): void {
+    super.emit("error", error);
+  }
 }
