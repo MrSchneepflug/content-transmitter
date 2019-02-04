@@ -1,4 +1,4 @@
-import * as EventEmitter from "events";
+import EventEmitter from "events";
 
 import ConfigInterface from "./interfaces/ConfigInterface";
 import ConsumerPayloadInterface from "./interfaces/ConsumerPayloadInterface";

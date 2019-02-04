@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    "esModuleInterop": true,
     "target": "ES2017",
     "sourceMap": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": false,
     "strict": true,
-    "outDir": "dist/"
+    "outDir": "dist/",
+    "declaration": true
   },
   "exclude": [
     "./coverage",

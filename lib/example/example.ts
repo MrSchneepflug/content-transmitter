@@ -1,4 +1,4 @@
-import ContentTransmitter from "../";
+import ContentTransmitter from "../..";
 
 (async () => {
 

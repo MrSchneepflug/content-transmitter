@@ -1,4 +1,4 @@
-import * as EventEmitter from "events";
+import EventEmitter from "events";
 
 import { NProducer as SinekProducer } from "sinek";
 
@@ -37,7 +37,7 @@ export default class Producer extends EventEmitter {
   public async produce(key: string, message: ProducerPayloadInterface): Promise<void> {
     try {
       // With version = 1
-      await this.producer.buffer(this.config.produceTo, key, message, null, 1);
+      await this.producer.buffer(this.config.produceTo, key, message, undefined, 1);
     } catch (error) {
       this.handleError(error);
     }
