@@ -3,12 +3,13 @@
   "version": "0.6.0",
   "description": "Crawl HTML from a server (triggered by Events) and produce it to Apache Kafka",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": "git@github.com:knamp/content-transmitter.git",
   "author": "Christian Fröhlingsdorf <chris@5cf.de>",
   "license": "MIT",
   "scripts": {
     "start": "yarn build && yarn test",
-    "test": "node dist/test/sample.js",
+    "test": "mocha -r ts-node/register test/unit/*.ts",
     "ts:lint": "tslint -c tslint.json '**/*.ts'",
     "ts:build": "rm -rf dist/ && tsc -p tsconfig.json",
     "ts:watch": "yarn ts:build --watch",
@@ -16,15 +17,23 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
+    "@types/express": "^4.16.1",
     "bluebird": "^3.5.1",
     "crawler": "^1.1.2",
+    "ejvm": "^1.0.0",
     "lodash": "^4.17.5",
-    "sinek": "~6.15.1"
+    "sinek": "^6.24.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.106",
+    "@types/mocha": "^5.2.5",
     "@types/node": "~9.4.7",
+    "@types/sinon": "^7.0.5",
+    "mocha": "^5.2.0",
+    "node-mocks-http": "^1.7.3",
+    "sinon": "^7.2.3",
+    "ts-node": "^8.0.2",
     "tslint": "~5.9.1",
-    "typescript": "~2.7.2"
+    "typescript": "3.3"
   }
 }

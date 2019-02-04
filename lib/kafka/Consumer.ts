@@ -1,4 +1,4 @@
-import * as EventEmitter from "events";
+import EventEmitter from "events";
 
 import { NConsumer as SinekConsumer } from "sinek";
 
@@ -15,7 +15,7 @@ export default class Consumer extends EventEmitter {
     super();
 
     const { consumeFrom } = config;
-    this.consumer = new SinekConsumer(consumeFrom, config);
+    this.consumer = new SinekConsumer([consumeFrom], config);
     this.consume = this.consume.bind(this);
     this.handleError = this.handleError.bind(this);
   }
@@ -37,7 +37,7 @@ export default class Consumer extends EventEmitter {
         this.consume.bind(this),
         true,
         true,
-        this.config.consumerOptions,
+        this.config.consumerOptions as any, // ?
       ).catch((error) => this.handleError(error));
     } catch (error) {
       this.handleError(error);
@@ -52,7 +52,7 @@ export default class Consumer extends EventEmitter {
   public close(): void {
 
     if (this.consumer) {
-        this.consumer.close();
+        this.consumer.close(false); // ?
     }
   }
 

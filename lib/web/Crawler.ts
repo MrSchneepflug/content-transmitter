@@ -1,7 +1,7 @@
-import * as EventEmitter from "events";
+import EventEmitter from "events";
 
-import * as Promise from "bluebird";
-import * as NodeCrawler from "crawler";
+import Promise from "bluebird";
+import NodeCrawler from "crawler";
 
 import ConfigInterface from "./../interfaces/ConfigInterface";
 import ProducerPayloadInterface from "./../interfaces/ProducerPayloadInterface";
