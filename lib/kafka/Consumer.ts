@@ -37,7 +37,8 @@ export default class Consumer extends EventEmitter {
         this.consume.bind(this),
         true,
         true,
-        this.config.consumerOptions as any, // ?
+        // @ts-ignore
+        this.config.consumerOptions,
       ).catch((error) => this.handleError(error));
     } catch (error) {
       this.handleError(error);
@@ -52,7 +53,7 @@ export default class Consumer extends EventEmitter {
   public close(): void {
 
     if (this.consumer) {
-        this.consumer.close(false); // ?
+        this.consumer.close(false);
     }
   }
 

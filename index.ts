@@ -41,3 +41,7 @@ export default (options: ConfigInterface): Processor => {
 
   return new Processor(config);
 };
+
+export {createRequestHandler} from "./lib/factories/RequestHandler";
+export {createValidationMiddleware} from "./lib/factories/ValidationMiddleware";
+export {createErrorHandler} from "./lib/factories/ErrorHandler";

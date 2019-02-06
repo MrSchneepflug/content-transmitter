@@ -14,7 +14,8 @@
     "ts:build": "rm -rf dist/ && tsc -p tsconfig.json",
     "ts:watch": "yarn ts:build --watch",
     "build": "yarn ts:build",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "yarn build",
+    "prepack": "yarn build"
   },
   "dependencies": {
     "@types/express": "^4.16.1",
