@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "start": "yarn build && yarn test",
-    "test": "mocha -r ts-node/register test/unit/*.ts",
+    "test": "mocha --extension ts test/unit/",
     "ts:lint": "tslint -c tslint.json '**/*.ts'",
     "ts:build": "rm -rf dist/ && tsc -p tsconfig.json",
     "ts:watch": "yarn ts:build --watch",
