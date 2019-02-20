@@ -37,6 +37,7 @@ export default class Consumer extends EventEmitter {
         this.consume.bind(this),
         true,
         true,
+        // @todo: The config-interfaces in general are subject to change, hence this warning is ignored for now.
         // @ts-ignore
         this.config.consumerOptions,
       ).catch((error) => this.handleError(error));
