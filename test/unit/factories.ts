@@ -2,7 +2,7 @@ import assert from "assert";
 import {isJsonSchemaValidationError, JsonSchemaValidationError} from "ejvm";
 import httpMocks from "node-mocks-http";
 import sinon from "sinon";
-import {createErrorHandler, createRequestHandler, createValidationMiddleware} from "../../";
+import {createErrorHandler, createCrawlerEnqueueHandler} from "../../";
 
 function createMocks() {
   const {req, res} = httpMocks.createMocks();
@@ -21,7 +21,7 @@ describe("factories", () => {
     describe("creates a request-handler that", () => {
       describe("in a successful case", () => {
         const {next, producer, req, res} = createMocks();
-        const requestHandler = createRequestHandler(producer as any, "test-topic", () => "test-identifier");
+        const [, requestHandler] = createCrawlerEnqueueHandler(producer as any, "test-topic", () => "test-identifier");
 
         before(async () => {
           await requestHandler(req, res, next);
@@ -61,18 +61,14 @@ describe("factories", () => {
         const {next, producer, req, res} = createMocks();
         producer.buffer.rejects();
 
-        const requestHandler = createRequestHandler(producer as any, "test-topic", () => "test-identifier");
+        const [, requestHandler] = createCrawlerEnqueueHandler(producer as any, "test-topic", () => "test-identifier");
 
-        before(async () => {
-          try {
-            await requestHandler(req, res, next);
-          } catch (error) {
-            // do nothing
-          }
-        });
+        before(() => requestHandler(req, res, next));
 
-        it("returns a 500 status code", () => {
-          assert.strictEqual(res.statusCode, 500);
+        // @todo: wait for res.send/end/json ..
+
+        it("returns a 503 status code", () => {
+          assert.strictEqual(res.statusCode, 503);
         });
 
         it("does not forward to the next middleware", () => {
@@ -83,7 +79,7 @@ describe("factories", () => {
   });
 
   describe("validation-middleware factory", () => {
-    const validationMiddleware = createValidationMiddleware();
+    const [validationMiddleware] = createCrawlerEnqueueHandler({} as any, "", () => "");
     const {req, res} = httpMocks.createMocks();
     const next = sinon.stub();
 
