@@ -42,5 +42,6 @@ export default (options: ConfigInterface): Processor => {
   return new Processor(config);
 };
 
+export {Processor};
 export {createCrawlerEnqueueHandler} from "./lib/factories/RequestHandler";
 export {createErrorHandler} from "./lib/factories/ErrorHandler";
