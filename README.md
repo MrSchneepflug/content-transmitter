@@ -3,6 +3,7 @@
 Crawl HTML Pages (triggered by Kafka events) and produces selected content to Kafka topic.
 
 [![Build Status](https://travis-ci.com/knamp/content-transmitter.svg?branch=master)](https://travis-ci.com/knamp/content-transmitter)
+[![Greenkeeper badge](https://badges.greenkeeper.io/knamp/content-transmitter.svg)](https://greenkeeper.io/)
 
 ## Usage
 
