@@ -2,6 +2,8 @@
 
 Crawl HTML Pages (triggered by Kafka events) and produces selected content to Kafka topic.
 
+[![Build Status](https://travis-ci.com/knamp/content-transmitter.svg?branch=master)](https://travis-ci.com/knamp/content-transmitter)
+
 ## Usage
 
 Install via yarn
