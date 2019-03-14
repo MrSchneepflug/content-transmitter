@@ -1,20 +1,21 @@
 import EventEmitter from "events";
 
-import { NProducer as SinekProducer } from "sinek";
+import {KafkaProducerConfig, NProducer as SinekProducer} from "sinek";
 
 import ConfigInterface from "./../interfaces/ConfigInterface";
 import ProducerPayloadInterface from "./../interfaces/ProducerPayloadInterface";
 
 export default class Producer extends EventEmitter {
-  private producer: SinekProducer;
-  private timeout: number | null = null;
+  private readonly producer: SinekProducer;
 
-  constructor(public config: ConfigInterface) {
+  constructor(
+    private readonly produceTo: string,
+    private readonly config: ConfigInterface,
+    private readonly producerConfig: KafkaProducerConfig,
+  ) {
     super();
 
-    this.producer = new SinekProducer(config, null,
-      config.producerPartitionCount || 1);
-
+    this.producer = new SinekProducer(producerConfig, null, config.producerPartitionCount || 1);
     this.handleError = this.handleError.bind(this);
   }
 
@@ -37,7 +38,7 @@ export default class Producer extends EventEmitter {
   public async produce(key: string, message: ProducerPayloadInterface): Promise<void> {
     try {
       // With version = 1
-      await this.producer.buffer(this.config.produceTo, key, message, undefined, 1);
+      await this.producer.buffer(this.produceTo, key, message, undefined, 1);
     } catch (error) {
       this.handleError(error);
     }
@@ -47,7 +48,6 @@ export default class Producer extends EventEmitter {
    * Closes the producer
    */
   public close(): void {
-
       if (this.producer) {
           this.producer.close();
       }

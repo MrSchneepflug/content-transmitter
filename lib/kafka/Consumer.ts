@@ -1,21 +1,20 @@
 import EventEmitter from "events";
 
-import { NConsumer as SinekConsumer } from "sinek";
+import { KafkaConsumerConfig, NConsumer as SinekConsumer } from "sinek";
 
-import ConfigInterface from "./../interfaces/ConfigInterface";
 import ConsumerPayloadInterface from "./../interfaces/ConsumerPayloadInterface";
 
 export default class Consumer extends EventEmitter {
-  private consumer: SinekConsumer;
+  private readonly consumer: SinekConsumer;
 
   constructor(
-    private config: ConfigInterface,
-    private process: (message: ConsumerPayloadInterface) => Promise<void>,
+    private readonly consumeFrom: string,
+    private readonly config: KafkaConsumerConfig,
+    private readonly process: (message: ConsumerPayloadInterface) => Promise<void>,
   ) {
     super();
 
-    const { consumeFrom } = config;
-    this.consumer = new SinekConsumer([consumeFrom], config);
+    this.consumer = new SinekConsumer(consumeFrom, config);
     this.consume = this.consume.bind(this);
     this.handleError = this.handleError.bind(this);
   }
@@ -37,9 +36,6 @@ export default class Consumer extends EventEmitter {
         this.consume.bind(this),
         true,
         true,
-        // @todo: The config-interfaces in general are subject to change, hence this warning is ignored for now.
-        // @ts-ignore
-        this.config.consumerOptions,
       ).catch((error) => this.handleError(error));
     } catch (error) {
       this.handleError(error);
@@ -52,7 +48,6 @@ export default class Consumer extends EventEmitter {
    * Closes the consumer
    */
   public close(): void {
-
     if (this.consumer) {
         this.consumer.close(false);
     }

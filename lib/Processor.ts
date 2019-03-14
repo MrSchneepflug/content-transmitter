@@ -9,20 +9,24 @@ import Consumer from "./kafka/Consumer";
 import Producer from "./kafka/Producer";
 import Crawler from "./web/Crawler";
 
+import {KafkaConsumerConfig, KafkaProducerConfig} from "sinek";
 import NullLogger from "./NullLogger";
 
 export default class Processor extends EventEmitter {
+  private readonly consumer: Consumer;
+  private readonly producer: Producer;
+  private readonly crawler: Crawler;
+  private readonly logger: LoggerInterface;
 
-  private consumer: Consumer;
-  private producer: Producer;
-  private crawler: Crawler;
-  private logger: LoggerInterface;
-
-  constructor(public config: ConfigInterface) {
+  constructor(
+    private config: ConfigInterface,
+    consumerConfig: KafkaConsumerConfig,
+    producerConfig: KafkaProducerConfig,
+  ) {
     super();
 
-    this.consumer = new Consumer(config, this.handleConsumerMessage.bind(this));
-    this.producer = new Producer(config);
+    this.consumer = new Consumer(config.consumeFrom, consumerConfig, this.handleConsumerMessage.bind(this));
+    this.producer = new Producer(config.produceTo, config, producerConfig);
     this.crawler = new Crawler(config);
 
     this.consumer.on("error", this.handleError.bind(this));
