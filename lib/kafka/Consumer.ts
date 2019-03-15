@@ -1,6 +1,6 @@
 import EventEmitter from "events";
 
-import { KafkaConsumerConfig, NConsumer as SinekConsumer } from "sinek";
+import {BatchConfig, KafkaConsumerConfig, NConsumer as SinekConsumer} from "sinek";
 
 import ConsumerPayloadInterface from "./../interfaces/ConsumerPayloadInterface";
 
@@ -10,6 +10,7 @@ export default class Consumer extends EventEmitter {
   constructor(
     private readonly consumeFrom: string,
     private readonly config: KafkaConsumerConfig,
+    private readonly batchConfig: BatchConfig,
     private readonly process: (message: ConsumerPayloadInterface) => Promise<void>,
   ) {
     super();
@@ -36,6 +37,7 @@ export default class Consumer extends EventEmitter {
         this.consume.bind(this),
         true,
         true,
+        this.batchConfig,
       ).catch((error) => this.handleError(error));
     } catch (error) {
       this.handleError(error);
