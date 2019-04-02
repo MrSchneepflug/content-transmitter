@@ -1,9 +1,9 @@
 import EventEmitter from "events";
 
 import ConfigInterface from "./interfaces/ConfigInterface";
-import ConsumerPayloadInterface from "./interfaces/ConsumerPayloadInterface";
+import {CrawlingRequest} from "./interfaces/CrawlingRequest";
+import {CrawlingResponse} from "./interfaces/CrawlingResponse";
 import LoggerInterface from "./interfaces/LoggerInterface";
-import ProducerPayloadInterface from "./interfaces/ProducerPayloadInterface";
 
 import Consumer from "./kafka/Consumer";
 import Producer from "./kafka/Producer";
@@ -57,13 +57,13 @@ export default class Processor extends EventEmitter {
     }
   }
 
-  private async handleConsumerMessage(message: ConsumerPayloadInterface): Promise<void> {
+  private async handleConsumerMessage(message: CrawlingRequest): Promise<void> {
     const logPayload = {identifier: message.key.toString(), url: message.url};
 
     this.logger.info("starting crawling", logPayload);
 
     const startTime = new Date().getTime();
-    const payload: ProducerPayloadInterface = await this.crawler.crawl(message.url);
+    const payload: CrawlingResponse = await this.crawler.crawl(message.url);
     const executionTime = new Date().getTime() - startTime;
 
     this.logger.info("finished crawling", {...logPayload, executionTime});
