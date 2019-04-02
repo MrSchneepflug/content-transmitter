@@ -66,15 +66,22 @@ export default class Processor extends EventEmitter {
     const logPayload = {identifier: message.key.toString(), url: message.url};
 
     this.logger.info("starting crawling", logPayload);
-
     const startTime = new Date().getTime();
-    const payload: CrawlingResponse = await this.crawler.crawl(message.url);
-    const executionTime = new Date().getTime() - startTime;
 
+    let payload: CrawlingResponse | null = null;
+
+    try {
+      payload = await this.crawler.crawl(message.url);
+    } catch (error) {
+      this.logger.error("crawling failed", {error: error.message, ...logPayload});
+      return;
+    }
+
+    const executionTime = new Date().getTime() - startTime;
     this.logger.info("finished crawling", {...logPayload, executionTime});
 
-    await this.producer.produce(message.key, payload);
-
+    // `payload` will not be null if the crawler resolves
+    await this.producer.produce(message.key, payload!);
     this.logger.info("added content to queue", {...logPayload, topic: this.config.produceTo});
   }
 
