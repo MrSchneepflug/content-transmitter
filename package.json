@@ -1,6 +1,6 @@
 {
   "name": "knamp-content-transmitter",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Crawl HTML from a server (triggered by Events) and produce it to Apache Kafka",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
