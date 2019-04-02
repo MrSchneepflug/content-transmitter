@@ -7,7 +7,6 @@ import {CrawlingResponse} from "../interfaces/CrawlingResponse";
 import ConfigInterface from "./../interfaces/ConfigInterface";
 
 export default class Crawler extends EventEmitter {
-
   private spider: NodeCrawler;
 
   constructor(config: ConfigInterface) {
@@ -30,12 +29,12 @@ export default class Crawler extends EventEmitter {
             return reject(error);
           }
 
-          const payload: CrawlingResponse = {
+          const response: CrawlingResponse = {
             content: this.transform(result.body),
             url,
           };
 
-          resolve(payload);
+          resolve(response);
         },
         jQuery: false,
         uri: url,
