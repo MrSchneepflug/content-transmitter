@@ -3,8 +3,8 @@ import EventEmitter from "events";
 import Promise from "bluebird";
 import NodeCrawler from "crawler";
 
+import {CrawlingResponse} from "../interfaces/CrawlingResponse";
 import ConfigInterface from "./../interfaces/ConfigInterface";
-import ProducerPayloadInterface from "./../interfaces/ProducerPayloadInterface";
 
 export default class Crawler extends EventEmitter {
 
@@ -20,7 +20,7 @@ export default class Crawler extends EventEmitter {
     return body.replace(/\r?\n|\r/g, " ").trim();
   }
 
-  public crawl(url: string): Promise<ProducerPayloadInterface> {
+  public crawl(url: string): Promise<CrawlingResponse> {
     return new Promise((resolve, reject) => {
       this.spider.queue({
         callback: (error, result, done) => {
@@ -30,7 +30,7 @@ export default class Crawler extends EventEmitter {
             return reject(error);
           }
 
-          const payload: ProducerPayloadInterface = {
+          const payload: CrawlingResponse = {
             content: this.transform(result.body),
             url,
           };

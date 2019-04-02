@@ -1,7 +1,7 @@
 import EventEmitter from "events";
 import {BatchConfig, KafkaConsumerConfig, KafkaMessage, NConsumer as SinekConsumer, SortedMessageBatch} from "sinek";
+import {CrawlingRequest} from "../interfaces/CrawlingRequest";
 import {isKafkaMessage, Message} from "../typeguards";
-import ConsumerPayloadInterface from "./../interfaces/ConsumerPayloadInterface";
 
 export default class Consumer extends EventEmitter {
   private readonly consumer: SinekConsumer;
@@ -10,7 +10,7 @@ export default class Consumer extends EventEmitter {
     private readonly consumeFrom: string,
     private readonly config: KafkaConsumerConfig,
     private readonly batchConfig: BatchConfig,
-    private readonly process: (message: ConsumerPayloadInterface) => Promise<void>,
+    private readonly process: (message: CrawlingRequest) => Promise<void>,
   ) {
     super();
 
@@ -111,7 +111,7 @@ export default class Consumer extends EventEmitter {
    * Handle newly created messages
    */
   private async handleMessage(message: KafkaMessage) {
-      const messageContent: ConsumerPayloadInterface = {
+      const messageContent: CrawlingRequest = {
         key: Buffer.isBuffer(message.key) ? message.key.toString() : message.key,
         url: message.value.url,
       };

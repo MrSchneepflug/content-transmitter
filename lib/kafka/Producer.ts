@@ -2,8 +2,8 @@ import EventEmitter from "events";
 
 import {KafkaProducerConfig, NProducer as SinekProducer} from "sinek";
 
+import {CrawlingResponse} from "../interfaces/CrawlingResponse";
 import ConfigInterface from "./../interfaces/ConfigInterface";
-import ProducerPayloadInterface from "./../interfaces/ProducerPayloadInterface";
 
 export default class Producer extends EventEmitter {
   private readonly producer: SinekProducer;
@@ -35,7 +35,7 @@ export default class Producer extends EventEmitter {
   /**
    * Produce a new message
    */
-  public async produce(key: string, message: ProducerPayloadInterface): Promise<void> {
+  public async produce(key: string, message: CrawlingResponse): Promise<void> {
     try {
       // With version = 1
       await this.producer.buffer(this.produceTo, key, message, undefined, 1);
