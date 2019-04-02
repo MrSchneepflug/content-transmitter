@@ -26,7 +26,13 @@ export default class Processor extends EventEmitter {
   ) {
     super();
 
-    this.consumer = new Consumer(config.consumeFrom, consumerConfig, batchConfig, this.handleConsumerMessage.bind(this));
+    this.consumer = new Consumer(
+      config.consumeFrom,
+      consumerConfig,
+      batchConfig,
+      this.handleConsumerMessage.bind(this),
+    );
+
     this.producer = new Producer(config.produceTo, config, producerConfig);
     this.crawler = new Crawler(config);
 
@@ -43,7 +49,6 @@ export default class Processor extends EventEmitter {
   }
 
   public close(): void {
-
     if (this.consumer) {
         this.consumer.close();
     }
