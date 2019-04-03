@@ -1,5 +1,5 @@
 import EventEmitter from "events";
-import {BatchConfig, KafkaConsumerConfig, KafkaMessage, NConsumer as SinekConsumer, SortedMessageBatch} from "sinek";
+import {KafkaConsumerConfig, KafkaMessage, NConsumer as SinekConsumer, SortedMessageBatch} from "sinek";
 import {CrawlingRequest} from "../interfaces/CrawlingRequest";
 import {isKafkaMessage, Message} from "../typeguards";
 
@@ -9,13 +9,13 @@ export default class Consumer extends EventEmitter {
   constructor(
     private readonly consumeFrom: string,
     private readonly config: KafkaConsumerConfig,
-    private readonly batchConfig: BatchConfig,
     private readonly process: (message: CrawlingRequest) => Promise<void>,
   ) {
     super();
 
     this.consumer = new SinekConsumer(consumeFrom, config);
-    this.consume = this.consume.bind(this);
+    this.consumer.on("error", this.handleError.bind(this));
+
     this.handleError = this.handleError.bind(this);
   }
 
@@ -29,20 +29,7 @@ export default class Consumer extends EventEmitter {
       this.handleError(error);
     }
 
-    // Consume as JSON with callback
-    try {
-      // Do not await this (it only fires after first message)
-      this.consumer.consume(
-        this.consume.bind(this),
-        true,
-        true,
-        this.batchConfig,
-      ).catch((error) => this.handleError(error));
-    } catch (error) {
-      this.handleError(error);
-    }
-
-    this.consumer.on("error", this.handleError.bind(this));
+    this.consumer.consume(this.consume.bind(this), true, true).catch((error) => this.handleError(error));
   }
 
   /**

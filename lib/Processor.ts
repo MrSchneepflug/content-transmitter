@@ -9,7 +9,7 @@ import Consumer from "./kafka/Consumer";
 import Producer from "./kafka/Producer";
 import Crawler from "./web/Crawler";
 
-import {BatchConfig, KafkaConsumerConfig, KafkaProducerConfig} from "sinek";
+import {KafkaConsumerConfig, KafkaProducerConfig} from "sinek";
 import NullLogger from "./NullLogger";
 
 export default class Processor extends EventEmitter {
@@ -22,14 +22,12 @@ export default class Processor extends EventEmitter {
     private config: ConfigInterface,
     consumerConfig: KafkaConsumerConfig,
     producerConfig: KafkaProducerConfig,
-    batchConfig: BatchConfig,
   ) {
     super();
 
     this.consumer = new Consumer(
       config.consumeFrom,
       consumerConfig,
-      batchConfig,
       this.handleConsumerMessage.bind(this),
     );
 
