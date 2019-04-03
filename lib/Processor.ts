@@ -47,10 +47,6 @@ export default class Processor extends EventEmitter {
   }
 
   public close(): void {
-    if (this.consumer) {
-        this.consumer.close();
-    }
-
     if (this.producer) {
         this.producer.close();
     }
