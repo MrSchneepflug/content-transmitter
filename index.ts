@@ -11,6 +11,17 @@ const defaultConfig: ConfigInterface = {
 
 const defaultConsumerConfig: KafkaConsumerConfig = {
   groupId: "crawler",
+  kafkaHost: "localhost:9092",
+  // metadata.broker.list MUST be set via kafkaHost-property. If we set it here manually, it will be used as
+  // an overwrite.
+  //
+  // @ts-ignore
+  noptions: {
+    "enable.auto.commit": false,
+  },
+  tconf: {
+    "auto.offset.reset": "earliest",
+  },
 };
 
 const defaultProducerConfig: KafkaProducerConfig = {
